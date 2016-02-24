@@ -85,6 +85,8 @@ class RESTClient(object):
         
         response_info.content_type = response.getheader('Content-Type', 'unknown!')
         response_info.content_length = response.getheader('Content-Length', 'unknown!')
+        
+        response_info.duration=end_time-start_time
 
         return response_info
         
