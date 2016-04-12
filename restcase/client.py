@@ -6,8 +6,11 @@ import ssl
 import timeit
 import urllib
 
-from httputil import REQUEST_SPEC
+import requests
+
 from httputil import HTTP_METHOD
+from httputil import REQUEST_SPEC
+
 
 class RESTClient(object):
 
@@ -49,16 +52,19 @@ class RESTClient(object):
 
         http_method = request_obj.get(REQUEST_SPEC.METHOD, HTTP_METHOD.GET)
         path_query = RESTClient.__build_path_query(request_obj)
+
         body = request_obj.get(REQUEST_SPEC.BODY)
-        
+        if isinstance(body, unicode):
+            body = bytearray(body,'utf-8')
+
         req_stat = RESTClient.__get_url(request_obj)
-        print http_method, req_stat
-        
+        print http_method, req_stat        
         
         headers = request_obj.get(REQUEST_SPEC.HEADERS, {})
-        
+ 
         start_time = timeit.default_timer()
-        self.__conn.request(http_method , path_query , body , headers)
+        
+        self.__conn.request(http_method , path_query , body, headers)
         request_time = timeit.default_timer()
         
         response = self.__conn.getresponse()
