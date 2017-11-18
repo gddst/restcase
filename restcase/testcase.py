@@ -146,6 +146,10 @@ class RESTCase(TestCase):
         with self.assertRaises(KeyError):
             getJsonKey(body_json, key_path)
 
+    def assertJsonKeyValueSize(self, response, key_path=[], size=None):
+        body_json=json.loads(response.body)
+        self.assertEqual(len(getJsonKey(body_json, key_path)), size)
+
 
 def getJsonKey(json_obj, key_path):
     cur_entry=json_obj

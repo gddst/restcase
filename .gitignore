@@ -9,3 +9,7 @@
 build/
 dist/
 restcase.egg-info/
+
+# IDE
+.idea
+

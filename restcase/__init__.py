@@ -14,9 +14,16 @@ from testcase import TEST_CASE_SPEC
 __all__ = [
 ]
 
-def run_test(testcase_spec, ext_validator=None):
-    
-    RESTCase(testcase_spec, ext_validator, methodName='run_test').run_test()
+def run_test(testcase_spec, ext_validator=None, setup=None, teardown=None):
+
+    if setup:
+        setup()
+
+    try:
+        RESTCase(testcase_spec, ext_validator, methodName='run_test').run_test()
+    finally:
+        if teardown:
+            teardown()
     
     # If invoke testcase by "run", all the assertion exception will be intercepted
     # by unittest framework. To make the outer framework (Say StromTest) being 
