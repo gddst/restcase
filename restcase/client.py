@@ -1,15 +1,18 @@
 """
 """
-
-import httplib
+try:
+    from http import client as httpclient # 3
+except:
+    import httplib as httpclient # 2
 import ssl
 import timeit
-import urllib
+try:
+    from urllib.parse import urlencode # 3
+except:
+    from urllib import urlencode # 2
 
-import requests
-
-from httputil import HTTP_METHOD
-from httputil import REQUEST_SPEC
+from .httputil import HTTP_METHOD
+from .httputil import REQUEST_SPEC
 
 
 class RESTClient(object):
@@ -28,9 +31,9 @@ class RESTClient(object):
                 context.check_hostname = False
                 context.verify_mode = ssl.CERT_NONE
 
-            self.__conn = httplib.HTTPSConnection(host, context=context)
+            self.__conn = http.client.HTTPSConnection(host, context=context)
         else:
-            self.__conn = httplib.HTTPConnection(host)
+            self.__conn = http.client.HTTPConnection(host)
 
             
     def __enter__(self):
@@ -39,8 +42,8 @@ class RESTClient(object):
     
     def __exit__(self, exc_type, exc_value, exc_traceback):
         if exc_type:
-            print exc_type.__name__, ':', exc_value
-            print exc_traceback
+            print(exc_type.__name__, ':', exc_value)
+            print(exc_traceback)
         elif self.__conn:
             self.__conn.close()
   
@@ -54,11 +57,11 @@ class RESTClient(object):
         path_query = RESTClient.__build_path_query(request_obj)
 
         body = request_obj.get(REQUEST_SPEC.BODY)
-        if isinstance(body, unicode):
+        if isinstance(body, str):
             body = bytearray(body,'utf-8')
 
         req_stat = RESTClient.__get_url(request_obj)
-        print http_method, req_stat        
+        print(http_method, req_stat)        
         
         headers = request_obj.get(REQUEST_SPEC.HEADERS, {})
  
@@ -101,7 +104,7 @@ class RESTClient(object):
         query_string=""
         query = request_spec.get(REQUEST_SPEC.QUERY_PARAMS)
         if query:
-            query_string = "?"+urllib.urlencode(query)
+            query_string = "?"+urllib.parse.urlencode(query)
         return request_spec.get(REQUEST_SPEC.PATH, '') + query_string
     
     @staticmethod
