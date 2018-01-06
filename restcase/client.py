@@ -31,9 +31,9 @@ class RESTClient(object):
                 context.check_hostname = False
                 context.verify_mode = ssl.CERT_NONE
 
-            self.__conn = http.client.HTTPSConnection(host, context=context)
+            self.__conn = httpclient.HTTPSConnection(host, context=context)
         else:
-            self.__conn = http.client.HTTPConnection(host)
+            self.__conn = httpclient.HTTPConnection(host)
 
             
     def __enter__(self):
