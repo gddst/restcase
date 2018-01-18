@@ -1,14 +1,13 @@
 """
 """
 from unittest.result import TestResult
-import urllib
 
 from .testcase import RESTCase
-from client import RESTClient
-from httputil import HTTP_HEADER
-from httputil import MEDIA_TYPE
-from httputil import REQUEST_SPEC
-from testcase import TEST_CASE_SPEC
+from .client import RESTClient
+from .httputil import HTTP_HEADER
+from .httputil import MEDIA_TYPE
+from .httputil import REQUEST_SPEC
+from .testcase import TEST_CASE_SPEC
 
 
 __all__ = [
