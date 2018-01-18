@@ -1,6 +1,9 @@
 import json
 from unittest import TestCase
-import urllib
+try:
+    from urllib.parse import urlencode
+except:
+    from urllib import urlencode
 from restcase.client import RESTClient
 from restcase.httputil import REQUEST_SPEC, HTTP_HEADER, MEDIA_TYPE
 
@@ -42,7 +45,7 @@ class RESTCase(TestCase):
 
                 try:
                     validator = getattr(self, "assert" + validator_name)
-                except AttributeError, e:
+                except AttributeError as e:
                     if self.__ext_validator:
                         validator = getattr(self.__ext_validator, "assert" + validator_name)
                     else:
@@ -61,7 +64,7 @@ class RESTCase(TestCase):
         request_obj[REQUEST_SPEC.QUERY_PARAMS] = request_obj.get(REQUEST_SPEC.URL_PARAS, {})
 
         if content_type == MEDIA_TYPE.X_WWW_FORM_URLENCODED and req_paras:
-            request_obj[REQUEST_SPEC.BODY] = urllib.urlencode(req_paras, True)
+            request_obj[REQUEST_SPEC.BODY] = urlencode(req_paras, True)
         else:
             request_obj[REQUEST_SPEC.QUERY_PARAMS].update(req_paras)
 
@@ -92,8 +95,8 @@ class RESTCase(TestCase):
         :param header:
         :return:
         """
-        name = header.items()[0][0]
-        exp_value = header.items()[0][1]
+        name = list(header.items())[0][0]
+        exp_value = list(header.items())[0][1]
         self.assertEqual(response.headers.get(name), exp_value)
 
     '''
