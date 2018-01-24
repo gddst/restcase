@@ -104,7 +104,7 @@ class RESTClient(object):
         query_string=""
         query = request_spec.get(REQUEST_SPEC.QUERY_PARAMS)
         if query:
-            query_string = "?"+urllib.parse.urlencode(query)
+            query_string = "?"+urlencode(query)
         return request_spec.get(REQUEST_SPEC.PATH, '') + query_string
     
     @staticmethod
